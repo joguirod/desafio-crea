@@ -3,6 +3,7 @@ package com.gm2.desafio.creaapi.domain.title;
 import com.gm2.desafio.creaapi.domain.professional.Professional;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @Table(name = "title")
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Title {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
