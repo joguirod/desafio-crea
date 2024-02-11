@@ -7,6 +7,7 @@ import com.gm2.desafio.creaapi.domain.professional.Professional;
 import com.gm2.desafio.creaapi.domain.professional.ProfessionalDTO;
 import com.gm2.desafio.creaapi.repositories.ProfessionalRepository;
 import com.gm2.desafio.creaapi.repositories.TitleRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class ProfessionalService {
         this.titleRepository = titleRepository;
     }
 
+    @Transactional
     public void saveProfessional(Professional professional){
         professionalRepository.save(professional);
     }
@@ -35,11 +37,11 @@ public class ProfessionalService {
         return professional;
     }
 
-    public Professional addTitleToProfessional(Long professionalId, Long titleId) throws NotFoundException, AlreadyHaveException, InvalidOperationException {
+    public Professional addTitleToProfessional(Long professionalId, Long titleId) throws ProfessionalNotFoundException, AlreadyHaveException, InvalidOperationException, TitleNotFoundException {
         Optional<Professional> professionalOptional = professionalRepository.findById(professionalId);
         Optional<Title> titleOptional = titleRepository.findById(titleId);
-        if(professionalOptional.isEmpty()) throw new NotFoundException("Profissional informado não encontrado");
-        if(titleOptional.isEmpty()) throw new NotFoundException("Título informado não encontrado");
+        if(professionalOptional.isEmpty()) throw new ProfessionalNotFoundException("Profissional informado não encontrado");
+        if(titleOptional.isEmpty()) throw new TitleNotFoundException("Título informado não encontrado");
 
         Professional professional = professionalOptional.get();
         Title title = titleOptional.get();
