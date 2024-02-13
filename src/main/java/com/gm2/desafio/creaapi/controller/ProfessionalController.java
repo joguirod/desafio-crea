@@ -37,6 +37,11 @@ public class ProfessionalController {
         return new ResponseEntity<>(professionalService.activeProfessional(professionalId), HttpStatus.OK);
     }
 
+    @PostMapping("/inactivate/{professionalId}")
+    public ResponseEntity<Professional> inactivateProfessional(@PathVariable Long professionalId) throws AlreadyIsException, ProfessionalNotFoundException {
+        return new ResponseEntity<>(professionalService.inactivateProfessional(professionalId), HttpStatus.OK);
+    }
+
     @GetMapping()
     public ResponseEntity<List<Professional>> getAll(){
         return new ResponseEntity<>(professionalService.getAll(), HttpStatus.OK);
