@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/professional")
 public class ProfessionalController {
-    public final ProfessionalService professionalService;
+    private final ProfessionalService professionalService;
 
     public ProfessionalController(ProfessionalService professionalService) {
         this.professionalService = professionalService;
