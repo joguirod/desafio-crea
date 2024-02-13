@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "professional")
@@ -44,9 +45,12 @@ public class Professional {
     private LocalDate registrationDate; // data de registro
 
     // um profissional pode se relacionar com vários titulos e um titulo pode se relacionar com vários profissionais, relação N pra N
-    @ManyToMany(mappedBy = "professionals")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "professional_title",
+            joinColumns = @JoinColumn(name = "professional_id"), inverseJoinColumns = @JoinColumn(name = "title_id")
+    )
     private List<Title> titles;
-
     public Professional(ProfessionalDTO professionalDTO){
         this.name = professionalDTO.name();
         this.email = professionalDTO.email();

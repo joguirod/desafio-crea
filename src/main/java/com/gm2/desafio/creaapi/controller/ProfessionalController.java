@@ -27,7 +27,7 @@ public class ProfessionalController {
     }
 
     @PostMapping("/{professionalId}/add-title")
-    public ResponseEntity<Professional> addTitle(@PathVariable @RequestBody Long professionalId, TitleIdDTO titleDTO) throws
+    public ResponseEntity<Professional> addTitle(@PathVariable(name = "professionalId") Long professionalId, @RequestBody TitleIdDTO titleDTO) throws
             TitleNotFoundException, ProfessionalNotFoundException, InvalidOperationException, AlreadyHaveException {
         return new ResponseEntity<>(professionalService.addTitleToProfessional(professionalId, titleDTO), HttpStatus.OK);
     }
@@ -37,12 +37,12 @@ public class ProfessionalController {
         return new ResponseEntity<>(professionalService.getAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Professional> getById(@PathVariable Long id) throws ProfessionalNotFoundException {
         return new ResponseEntity<>(professionalService.getById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/email/{email}")
     public ResponseEntity<Professional> getByEmail(@PathVariable String email) throws ProfessionalNotFoundException {
         return new ResponseEntity<>(professionalService.getByEmail(email), HttpStatus.OK);
     }
