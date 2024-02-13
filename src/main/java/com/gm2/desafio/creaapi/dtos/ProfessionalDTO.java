@@ -1,5 +1,6 @@
-package com.gm2.desafio.creaapi.domain.professional;
+package com.gm2.desafio.creaapi.dtos;
 
+import com.gm2.desafio.creaapi.domain.professional.ProfessionalType;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;

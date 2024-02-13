@@ -1,12 +1,12 @@
 package com.gm2.desafio.creaapi.domain.professional;
 
 import com.gm2.desafio.creaapi.domain.title.Title;
+import com.gm2.desafio.creaapi.dtos.ProfessionalDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity(name = "professional")
