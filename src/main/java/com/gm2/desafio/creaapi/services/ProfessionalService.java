@@ -9,6 +9,7 @@ import com.gm2.desafio.creaapi.domain.professional.Professional;
 import com.gm2.desafio.creaapi.dtos.ProfessionalDTO;
 import com.gm2.desafio.creaapi.repositories.ProfessionalRepository;
 import com.gm2.desafio.creaapi.repositories.TitleRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,9 +22,12 @@ public class ProfessionalService {
     private final ProfessionalRepository professionalRepository;
     private final TitleRepository titleRepository;
 
-    public ProfessionalService(ProfessionalRepository professionalRepository, TitleRepository titleRepository) {
+    private final TitleService titleService;
+
+    public ProfessionalService(ProfessionalRepository professionalRepository, TitleRepository titleRepository, TitleService titleService) {
         this.professionalRepository = professionalRepository;
         this.titleRepository = titleRepository;
+        this.titleService = titleService;
     }
 
     public void saveProfessional(Professional professional){
@@ -90,12 +94,10 @@ public class ProfessionalService {
     public void deleteProfessional(Long id) throws ProfessionalNotFoundException {
         Professional professional = getById(id);
 
-        if(!verifyProfessionalExist(professional)){
-            throw new ProfessionalNotFoundException("O profissional informado não existe");
-        }
         professionalRepository.delete(professional);
     }
 
+    @Transactional
     public Professional addTitleToProfessional(Long professionalId, TitleIdDTO dto) throws ProfessionalNotFoundException, AlreadyHaveException, InvalidOperationException, TitleNotFoundException {
         Optional<Professional> professionalOptional = professionalRepository.findById(professionalId);
         Optional<Title> titleOptional = titleRepository.findById(dto.titleId());
@@ -105,23 +107,22 @@ public class ProfessionalService {
         Professional professional = professionalOptional.get();
         Title title = titleOptional.get();
 
+
         if(verifyProfessionalIsCancelled(professional)){
             throw new InvalidOperationException("Não é permitido adicionar título a um profissional com registro cancelado");
         } else{
             if(professional.getRegistrationStatus() == null){
                 setProfessionalStatusToActive(professional);
                 professional.setUniqueCode();
-                professional.addTitle(title);
-            } else{
-                if(verifyProfessionalHasTitle(professional, title)){
-                    throw new AlreadyHaveException("O profissional já possui o título informado");
-                }
-
-                professional.addTitle(title);
             }
+            if(verifyProfessionalHasTitle(professional, title)){
+                throw new AlreadyHaveException("O profissional já possui o título informado");
+            }
+            professional.addTitle(title);
         }
 
-        saveProfessional(professional);
+        this.saveProfessional(professional);
+
         return professional;
     }
 

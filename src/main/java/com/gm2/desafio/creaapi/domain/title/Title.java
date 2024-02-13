@@ -18,11 +18,4 @@ public class Title {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
-
-    @ManyToMany
-    @JoinTable(
-            name = "professional_title",
-            joinColumns = @JoinColumn(name = "title_id"), inverseJoinColumns = @JoinColumn(name = "professional_id")
-    )
-    public List<Professional> professionals;
 }
