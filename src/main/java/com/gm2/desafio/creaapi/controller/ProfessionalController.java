@@ -21,7 +21,7 @@ public class ProfessionalController {
         this.professionalService = professionalService;
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<Professional> post(@RequestBody ProfessionalDTO professionalDTO) throws AlreadyExistException, InvalidOperationException {
         return new ResponseEntity<>(professionalService.createProfessional(professionalDTO), HttpStatus.CREATED);
     }
@@ -30,6 +30,11 @@ public class ProfessionalController {
     public ResponseEntity<Professional> addTitle(@PathVariable(name = "professionalId") Long professionalId, @RequestBody TitleIdDTO titleDTO) throws
             TitleNotFoundException, ProfessionalNotFoundException, InvalidOperationException, AlreadyHaveException {
         return new ResponseEntity<>(professionalService.addTitleToProfessional(professionalId, titleDTO), HttpStatus.OK);
+    }
+
+    @PostMapping("/activate/{professionalId}")
+    public ResponseEntity<Professional> activateProfessional(@PathVariable Long professionalId) throws AlreadyIsException, ProfessionalNotFoundException {
+        return new ResponseEntity<>(professionalService.activeProfessional(professionalId), HttpStatus.OK);
     }
 
     @GetMapping()
