@@ -121,11 +121,7 @@ public class ProfessionalService {
             professional.addTitle(title);
         }
 
-<<<<<<< HEAD
         this.saveProfessional(professional);
-=======
-        professionalRepository.save(professional);
->>>>>>> 84013fcf41bcad65b150bfe1fd121c3bbf430f8d
 
         return professional;
     }
